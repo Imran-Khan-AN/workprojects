@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>FinGPT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('https://res.cloudinary.com/dcgyigszf/image/upload/v1688841453/17973908_kugq6l.jpg') no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+
+        .main_area {
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            align-items: center;
+            /* height: 100vh; */
+            /* background: #f4f4f4; */
+            margin-top: 20%;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .containerr {
+            display: flex;
+            align-items: center;
+
+        }
+
+        .logo {
+            margin-left: 10px;
+        }
+
+        .logo img {
+            max-height: 50px;
+            /* adjust based on your logo size */
+        }
+
+        button {
+            padding: 8px 18px;
+            border: unset;
+            border-radius: 5px;
+            color: #0F65FF;
+            z-index: 1;
+            background: #F8F9FA;
+            position: relative;
+            font-weight: 1000;
+            font-size: 17px;
+            -webkit-box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+            box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+            transition: all 250ms;
+            overflow: hidden;
+            margin-right: 30px;
+        }
+
+        button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0;
+            border-radius: 5px;
+            background-color: #0F65FF;
+            z-index: -1;
+            -webkit-box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+            box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+            transition: all 250ms
+        }
+
+        button:hover {
+            color: #e8e8e8;
+        }
+
+        button:hover::before {
+            width: 100%;
+        }
+
+        .custom-link {
+            color: #0F65FF;
+            text-decoration: none;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .custom-link:hover {
+            color: #e8e8e8;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-light bg-light p-2 justify-content-between" style=" background: #FFFFFF;">
+        <a class="navbar-brand p-1" style="margin-left: 10px;" href="/">
+            <img width="250px" src="https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,f_auto,q_auto:eco,dpr_1/yelrh5t25csmyjsw8ldv" alt="">
+        </a>
+
+        <div class="logo">
+            <img src="https://res.cloudinary.com/dcgyigszf/image/upload/v1688841306/deloitte-logo-partner-768x300_v8dmmg.png"
+                alt="Deloittle Logo" style="width: 120px;">
+        </div>
+
+    </nav>
+
+
+
+    <div class="main_area">
+
+        <div>
+
+            <div class="containerr">
+                <h1 style="font-size: 40px;">FinGPT</h1>
+                <p style="margin-top: 38px; margin-right: 20px;"><b>4.0</b></p>
+                <p style="margin-top: 48px;">Powered By Generative AI</p>
+
+            </div>
+
+        </div>
+
+        <a href="/login" class="custom-link" style="margin-top: 20px;"><button> Login
+            </button></a>
+
+        
+
+</body>
+
+</html>

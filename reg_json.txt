@@ -1,0 +1,89 @@
+{
+  "TotalCapitalRequirements": {
+    "Article 2 - Quantitative Requirements": {
+      "TotalRegulatoryCapital": {
+        "Components": {
+          "Tier1Capital": {
+            "Composition": [
+              "Common Equity Tier 1 (CET1)",
+              "Additional Tier 1 (AT1)"
+            ]
+          },
+          "Tier2Capital": "Tier 2 capital"
+        },
+        "NetOfRegulatoryAdjustments": true,
+        "MinimumRequirements": {
+          "CET1": "7.0% of risk-weighted assets (RWA)",
+          "Tier1Capital": "8.5% of RWA",
+          "TotalCapital": "10.5% of RWA"
+        }
+      },
+      "SupervisoryCapitalGuidanceRequirement (SCG)": "Set based on the Supervisory Review and Evaluation Process."
+    },
+    "Article 3 - Capital Components": {
+      "CET1Capital": {
+        "Components": [
+          "Common shares issued by the bank",
+          "Share premium",
+          "Retained earnings",
+          "Legal reserves",
+          "Statutory reserves",
+          "Accumulated other comprehensive income",
+          "Common shares from consolidated subsidiaries",
+          "Regulatory adjustments"
+        ]
+      },
+      "AT1Capital": {
+        "Components": [
+          "Instruments issued by the bank",
+          "Stock surplus/share premium",
+          "Instruments from consolidated subsidiaries",
+          "Regulatory adjustments"
+        ]
+      },
+      "Tier2Capital": {
+        "Components": [
+          "General provisions/general loan loss reserves (up to 1.25% of credit RWA)",
+          "Perpetual equity instruments (not in Tier 1)",
+          "Share premium from Tier 2 instruments",
+          "Instruments eligible for Tier 2",
+          "Perpetual instruments from consolidated subsidiaries (not in Tier 1)",
+          "Regulatory adjustments"
+        ]
+      },
+      "Exclusions": {
+        "Profit-sharing investment accounts": "Excluded from regulatory capital",
+        "Investment risk reserves and a portion of PER": "Excluded from regulatory capital"
+      }
+    },
+    "Article 4 - Regulatory Adjustments": {
+      "RegulatoryAdjustmentsToCET1Capital": [
+        "Goodwill and other intangibles",
+        "Deferred tax assets",
+        "Cash Flow hedge reserve",
+        "Gain on sale related to securitization transactions",
+        "Cumulative gains and losses due to changes in own credit risk",
+        "Defined benefit pension fund assets and liabilities",
+        "Investments in own shares or treasury stock",
+        "Cross holdings in other entities' capital",
+        "Investments in other entities' capital (outside regulatory consolidation)",
+        "Significant investments in other entities' capital (outside regulatory consolidation)",
+        "Threshold deductions"
+      ],
+      "RiskWeighting": {
+        "Certain securitization exposures": "Reciprocal of Total Capital requirement",
+        "Non-payment/delivery on transactions": "Reciprocal of Total Capital requirement",
+        "Significant investments in commercial entities": "Reciprocal of Total Capital requirement"
+      }
+    },
+    "Article 5 - Capital Conservation Buffer": {
+      "MinimumCET1Capital": "7.0% of RWA",
+      "CapitalConservationBuffer (CCB)": "2.5% of RWAs in CET1",
+      "ConsequencesForNonCompliance": {
+        "RestrictionOnDividends": "Based on capital conservation ratios",
+        "ReplenishmentPlan": "As part of internal capital adequacy assessment process",
+        "Monitoring": "By the Central Bank"
+      }
+    }
+  }
+}

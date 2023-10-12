@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Chatbot</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .main_area {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            margin-top: 300px;
+            /* align-items: center; */
+            height: 100vh;
+            margin: 0;
+            background-color: #e8e8e8;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .containerr {
+            display: flex;
+            align-items: center;
+
+        }
+
+        .logo {
+            margin-left: 10px;
+        }
+
+        .logo img {
+            max-height: 50px;
+            /* adjust based on your logo size */
+        }
+
+        button {
+            padding: 8px 18px;
+            border: unset;
+            border-radius: 5px;
+            color: #0F65FF;
+            z-index: 1;
+            background: #F8F9FA;
+            position: relative;
+            font-weight: 1000;
+            font-size: 17px;
+            -webkit-box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+            box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+            transition: all 250ms;
+            overflow: hidden;
+            margin-right: 30px;
+        }
+
+        button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0;
+            border-radius: 5px;
+            background-color: #0F65FF;
+            z-index: -1;
+            -webkit-box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+            box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+            transition: all 250ms
+        }
+
+        button:hover {
+            color: #e8e8e8;
+        }
+
+        button:hover::before {
+            width: 100%;
+        }
+
+        .custom-link {
+            color: #0F65FF;
+            text-decoration: none;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .custom-link:hover {
+            color: #e8e8e8;
+        }
+
+        .uploaded-files {
+            margin-top: 20px;
+            background: #ffffff;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+        }
+
+        .uploaded-file {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ccc;
+            padding: 5px 0;
+        }
+
+        .file-text {
+            background: #f5f5f5;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        /* ...[Your Previous Styles]... */
+        /* ...[Your Previous Styles]... */
+
+        .message-container,
+        .file-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .file-container h5 {
+            border-bottom: 1px solid #e8e8e8;
+            padding: 10px 0;
+            font-weight: 600;
+        }
+
+        .message-container p {
+            font-weight: 500;
+            color: #333;
+            line-height: 1.5;
+            max-height: 500px;
+            overflow: hidden;
+        }
+        
+    </style>
+</head>
+
+<body>
+    {% load static %}
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand p-1" style="margin-left: 10px;" href="/">
+            <img width="250px"
+                src="https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,f_auto,q_auto:eco,dpr_1/yelrh5t25csmyjsw8ldv"
+                alt="">
+
+        </a>
+
+
+        <div class="dropdown ml-auto mr-3">
+            <button class="btn btn-primary dropdown-toggle" style="background-color:#0F65FF;" type="button"
+                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Document Analysis
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="/chat_zone">FinGPT Bot</a>
+                <a class="dropdown-item" href="/audio">Audio Analysis</a>
+                <a class="dropdown-item" href="/reg">Reg. as a code</a>
+            </div>
+
+        </div>
+
+        <form action="/logout/" method="POST" class="form-inline">
+            {% csrf_token %}
+            <button style="background-color:#0F65FF;" type="submit" class="btn text-light my-2 my-sm-0">Logout</button>
+        </form>
+    </nav>
+
+
+    <div class="main_area">
+        <!-- ...[Your Other Content]... -->
+        <div>
+            <div class="containerr">
+                <h1 style="font-size: 40px;">FinGPT</h1>
+                <p style="margin-top: 38px; margin-right: 20px;"><b>4.0</b></p>
+                <p style="margin-top: 48px;">Powered By Generative AI</p>
+            </div>
+        </div>
+        <button id="uploadButton" class="mt-3" type="button" data-toggle="modal"
+            data-target="#uploadModal">Upload</button>
+
+
+
+
+        <!-- Upload Modal -->
+        <div id="uploadModal" class="modal" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Upload Document</h4>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Drag and Drop Area -->
+                        <div id="dropArea" style="border: 2px dashed #ccc; padding: 20px; text-align: center;">
+                            Drag and drop document file(s) here or click to select files
+                        </div>
+                        <!-- Upload Form -->
+                        <form id="uploadForm" style="display: none;">
+                            <input id="docFiles" type="file" accept=".doc,.docx,.pdf" multiple>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex w-75 justify-content-between" style="margin-top: 3%;">
+
+            <div class="file-container w-50" id="file-container" style="min-height: 400px;">
+                <!-- Files List -->
+                <h5>Uploaded Files</h5>
+                <div id="fileList" style="display: none;"></div>
+
+                <div class="w-100 d-flex justify-content-center mt-5">
+                    <button id="compareButton" style="display: none;">Compare</button>
+                </div>
+            </div>
+            <div class="message-container w-50" id="message" style="min-height: 400px;">
+                <!-- Message Content -->
+
+
+                <h5 style="font-weight: 600; border-bottom: 1px solid #e8e8e8;
+                padding: 10px 0;">Comparative Analysis</h5>
+
+                <div id="doc-text" style="display: none;">
+                    <p>
+                        <strong>1. Roles and Responsibilities - Internal Audit:</strong><br> Text 1: Internal Audit is responsible for verifying
+                        all the processes undertaken during the model lifecycle, including independent evaluation/assessment
+                        of the first two lines of defense. Text 2: Internal Audit is responsible for verifying all the
+                        processes undertaken during the model lifecycle, including independent validation of the models.
+                    </p>
+                    <hr>
+                    <p>
+                        <strong>2. Title of Officer Responsible for Policy Maintenance and Review:</strong><br>Text 1: Credit Risk Officer (CRO)
+                        is responsible for policy maintenance. review, and approval Text 2: Credit Credit Officer (CCO) is
+                        responsible for policy maintenance, review, and approval.
+                    </p>
+                    <hr>
+                    <p>
+                        <strong>3. Chief Credit Officer (CCO):</strong><br> Text 1: The role of the Chief Credit Officer (CCO) is not explicitly
+                        mentioned in this document. Text 2: The role of the Chief Credit Officer (CCO) is described as
+                        playing a pivotal role in the design, usage, and appropriateness of the models leveraged to support
+                        decision-making throughout the Bank, to minimize model risk.
+                    </p>
+                  </div>
+                  
+                <div class="w-100 h-75 d-flex flex-column justify-content-center align-items-center"
+                    style="display: none;" id="spinner-div">
+
+                    <div class="spinner-border" id="spinner" style="width: 3rem; height: 3rem; display: none;"
+                        role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+
+        <script>
+
+            var dropArea = document.getElementById('dropArea');
+            var docFiles = document.getElementById('docFiles');
+            var fileListDiv = document.getElementById('fileList');
+            var fileContainer = document.getElementById('file-container');
+            var messageDiv = document.getElementById('message');
+            var docTextDiv = document.getElementById('doc-text');
+
+            var loader = document.getElementById('spinner');
+            var loaderDiv = document.getElementById('spinner-div');
+
+
+            // Prevent default drag behaviors
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+            });
+
+
+            var compareButton = document.getElementById('compareButton');
+
+            compareButton.addEventListener('click', function () {
+                docTextDiv.style.display = "none";
+                loader.style.display = "block";
+                loaderDiv.style.display = "block";
+                // Hide the loader after 1 second (1000 milliseconds)
+                setTimeout(function () {
+                    loader.style.display = "none"; // Hide the loader
+                    loaderDiv.style.display = "none";
+                    docTextDiv.style.display = "block"; // Show the message div
+                }, 1000);
+            });
+            // Drag & Drop helpers
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            function highlight(e) {
+                dropArea.style.backgroundColor = '#f8f8f8';
+            }
+            function unhighlight(e) {
+                dropArea.style.backgroundColor = '#ffffff';
+            }
+
+            // Handle dropped files
+            dropArea.addEventListener('drop', handleDrop, false);
+
+            function handleDrop(e) {
+                var files = e.dataTransfer.files;
+                handleFiles(files);
+            }
+
+            function handleFiles(files) {
+                ([...files]).forEach(displayFile);
+                $('#uploadModal').modal('hide'); // Close the modal
+            }
+
+            function displayFile(file) {
+                var fileDiv = document.createElement('div');
+                fileDiv.classList.add('uploaded-file'); // use the CSS class
+
+                var fileName = document.createElement('p');
+                fileName.textContent = file.name;
+
+                fileDiv.appendChild(fileName);
+
+                fileListDiv.appendChild(fileDiv);
+
+                fileContainer.style.display = "block";
+                fileListDiv.style.display = "block";
+
+                // Display the compareButton only if there are more than 1 file in the fileList
+                if (fileListDiv.children.length > 1) {
+                    compareButton.style.display = "block";
+                } else {
+                    compareButton.style.display = "none";
+                }
+            }
+
+
+            dropArea.addEventListener('click', function () {
+                compareButton.style.display = "none";
+                docTextDiv.style.display = "none";
+                docFiles.click();
+
+                if (fileListDiv.children.length === 2) {
+                    // Remove both files
+                    fileListDiv.removeChild(fileListDiv.firstChild);
+                    fileListDiv.removeChild(fileListDiv.firstChild);
+                }
+            }, false);
+
+
+            docFiles.addEventListener('change', function () {
+                handleFiles(docFiles.files);
+            }, false);
+        </script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Chatbot</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .main_area {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            margin-top: 300px;
+            /* align-items: center; */
+            height: 100vh;
+            margin: 0;
+            background-color: #e8e8e8;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .containerr {
+            display: flex;
+            align-items: center;
+
+        }
+
+        .logo {
+            margin-left: 10px;
+        }
+
+        .logo img {
+            max-height: 50px;
+            /* adjust based on your logo size */
+        }
+
+        button {
+            padding: 8px 18px;
+            border: unset;
+            border-radius: 5px;
+            color: #0F65FF;
+            z-index: 1;
+            background: #F8F9FA;
+            position: relative;
+            font-weight: 1000;
+            font-size: 17px;
+            -webkit-box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+            box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+            transition: all 250ms;
+            overflow: hidden;
+            margin-right: 30px;
+        }
+
+        button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0;
+            border-radius: 5px;
+            background-color: #0F65FF;
+            z-index: -1;
+            -webkit-box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+            box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+            transition: all 250ms
+        }
+
+        button:hover {
+            color: #e8e8e8;
+        }
+
+        button:hover::before {
+            width: 100%;
+        }
+
+        .custom-link {
+            color: #0F65FF;
+            text-decoration: none;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .custom-link:hover {
+            color: #e8e8e8;
+        }
+
+        .uploaded-files {
+            margin-top: 20px;
+            background: #ffffff;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+        }
+
+        .uploaded-file {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ccc;
+            padding: 5px 0;
+        }
+
+        .file-text {
+            background: #f5f5f5;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        /* ...[Your Previous Styles]... */
+        /* ...[Your Previous Styles]... */
+
+        .message-container,
+        .file-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .file-container h5 {
+            border-bottom: 1px solid #e8e8e8;
+            padding: 10px 0;
+            font-weight: 600;
+        }
+
+        .message-container p {
+            font-weight: 500;
+            color: #333;
+            line-height: 1.5;
+            max-height: 500px;
+            overflow: hidden;
+        }
+    </style>
+
+    <style>
+        /* General Styling for the file content container */
+        .file-content {
+            max-height: 90%;
+            /* Adjust the height so that the content does not overlap with the div */
+            overflow-y: auto;
+            /* Will add scrollbar if content overflows */
+            border: 1px solid #b3b3b3;
+            padding: 10px;
+            font-family: 'Courier New', Courier, monospace;
+            /* Gives a code-like appearance */
+            background-color: #ffffff;
+            /* White background to differentiate the content area */
+            margin-top: 15px;
+            border-radius: 15px;
+            /* Spacing between the header and content */
+        }
+
+        .all-content {
+            height: 600px;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border: 1px solid #b3b3b3;
+            border-radius: 15px;
+            /* Border around the entire content area */
+        }
+
+        .w-50 {
+            padding: 0 15px;
+            /* Give some spacing for the internal divs */
+        }
+
+        /* Added border to the right side of the first div to separate content */
+        .w-50:not(:last-child) {
+            border-right: 1px solid #b3b3b3;
+        }
+
+
+        /* JSON specific styling - You can add more if you want */
+        .json-key {
+            color: #a52a2a;
+            /* brown color for keys */
+        }
+
+        .json-value {
+            color: #006400;
+            /* green color for string values */
+        }
+
+        .json-boolean {
+            color: #0000cd;
+            /* blue color for boolean values */
+        }
+
+        /* HTML specific styling - You can add more if you want */
+        .html-tag {
+            color: #228b22;
+            /* green color for HTML tags */
+        }
+
+        .html-attribute {
+            color: #a52a2a;
+            /* brown color for HTML attributes */
+        }
+
+        .html-value {
+            color: #0000cd;
+            /* blue color for attribute values */
+        }
+    </style>
+
+</head>
+
+<body>
+    {% load static %}
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand p-1" style="margin-left: 10px;" href="/">
+            <img width="250px"
+                src="https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,f_auto,q_auto:eco,dpr_1/yelrh5t25csmyjsw8ldv"
+                alt="">
+
+        </a>
+
+
+        <div class="dropdown ml-auto mr-3">
+            <button class="btn btn-primary dropdown-toggle" style="background-color:#0F65FF;" type="button"
+                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Reg. as a code
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="/chat_zone">FinGPT Bot</a>
+                <a class="dropdown-item" href="/document_analysis">Document Analysis</a>
+                <a class="dropdown-item" href="/audio">Audio Analysis</a>
+            </div>
+
+        </div>
+
+        <form action="/logout/" method="POST" class="form-inline">
+            {% csrf_token %}
+            <button style="background-color:#0F65FF;" type="submit" class="btn text-light my-2 my-sm-0">Logout</button>
+        </form>
+    </nav>
+
+
+    <div class="main_area">
+        <!-- ...[Your Other Content]... -->
+        <div>
+            <div class="containerr">
+                <h1 style="font-size: 40px;">FinGPT</h1>
+                <p style="margin-top: 38px; margin-right: 20px;"><b>4.0</b></p>
+                <p style="margin-top: 48px;">Powered By Generative AI</p>
+            </div>
+        </div>
+        <button id="uploadButton" class="mt-3" type="button" data-toggle="modal" data-target="#uploadModal">Upload
+            Document</button>
+
+
+
+
+        <!-- Upload Modal -->
+        <div id="uploadModal" class="modal" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Upload Document</h4>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Drag and Drop Area -->
+                        <div id="dropArea" style="border: 2px dashed #ccc; padding: 20px; text-align: center;">
+                            Drag and drop document file(s) here or click to select files
+                        </div>
+                        <!-- Upload Form -->
+                        <form id="uploadForm" style="display: none;">
+                            <input id="docFiles" type="file" accept=".doc,.docx,.pdf" multiple>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="all-content d-flex w-75 rounded" style="margin-top: 3%;">
+            <div class="w-50">
+                <h5>Reg JSON Content</h5>
+                <div class="file-content mt-2 h-100" id="regJsonContent" style="display: none;"></div>
+            </div>
+        
+            <div class="w-50">
+                <h5>Reg HTML Content (as text)</h5>
+                <div class="file-content mt-2 h-100" id="regHtmlContent" style="display: none;"></div>
+            </div>
+        </div>
+
+
+
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+
+        <script>
+            var dropArea = document.getElementById('dropArea');
+            var docFiles = document.getElementById('docFiles');
+            var regJsonContentDiv = document.getElementById('regJsonContent');
+            var regHtmlContentDiv = document.getElementById('regHtmlContent');
+
+            // Prevent default drag behaviors
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            dropArea.addEventListener('drop', handleDrop, false);
+
+            function handleDrop(e) {
+                e.preventDefault();
+                var formData = new FormData();
+                formData.append('file', e.dataTransfer.files[0]); // The random file you're uploading
+
+                fetch('your_django_endpoint_url', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        regJsonContentDiv.innerHTML = formatAsJson(data.reg_json);
+                        regHtmlContentDiv.innerHTML = formatAsHtml(data.reg_html);
+
+                        regJsonContentDiv.style.display = "block";
+                        regHtmlContentDiv.style.display = "block";
+                        $('#uploadModal').modal('hide');
+                    });
+            }
+
+            function formatAsJson(jsonString) {
+                try {
+                    let obj = JSON.parse(jsonString);
+                    let formatted = JSON.stringify(obj, null, 4);  // Indentation of 4 spaces
+                    return formatted.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')  // Basic HTML escaping
+                        .replace(/("(.*?)"\s*:)/g, '<span class="json-key">$1</span>')  // Coloring the keys
+                        .replace(/("(.*?)")/g, '<span class="json-value">$1</span>')   // Coloring the string values
+                        .replace(/\b(true|false|null)\b/g, '<span class="json-boolean">$1</span>');  // Coloring boolean values
+                } catch (e) {
+                    return jsonString;  // Return the raw string if there's any error
+                }
+            }
+
+            function formatAsHtml(htmlString) {
+                return htmlString.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')  // Basic HTML escaping
+                    .replace(/(&lt;\/?[^&gt;]+&gt;)/g, '<span class="html-tag">$1</span>')  // Coloring the HTML tags
+                    .replace(/([a-zA-Z-]+)="(.*?)"/g, '<span class="html-attribute">$1</span>=<span class="html-value">"$2"</span>'); // Coloring attributes and their values
+            }
+
+            dropArea.addEventListener('click', function () {
+                docFiles.click();
+            }, false);
+
+            docFiles.addEventListener('change', function () {
+                var formData = new FormData();
+                formData.append('file', docFiles.files[0]); // The random file you're uploading
+
+                fetch('/reg/', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        regJsonContentDiv.textContent = data.reg_json;
+                        regHtmlContentDiv.textContent = data.reg_html;
+
+                        regJsonContentDiv.style.display = "block";
+                        regHtmlContentDiv.style.display = "block";
+                        $('#uploadModal').modal('hide');
+                    });
+            }, false);
+
+        </script>
+
+
+
+
+</body>
+
+</html>

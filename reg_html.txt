@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banking Regulations</title>
+</head>
+<body>
+
+<h1>Introduction</h1>
+<p><strong>Central Bank Purpose:</strong> The Central Bank aims to promote the effective and efficient development of the banking system.</p>
+<p><strong>Bank Requirements:</strong> Banks are required to manage their capital in a prudent manner to contribute to the stability of the financial system.</p>
+
+<h1>Objective</h1>
+<p><strong>Minimum Capital Requirement:</strong> Establish minimum capital adequacy requirements for banks.</p>
+<p><strong>Financial Stability:</strong> Ensure the soundness of banks and enhance financial stability.</p>
+
+<h1>Scope of Application</h1>
+<p><strong>Banks:</strong> Applies to all banks.</p>
+<p><strong>Capital Adequacy Ratio:</strong> Includes solo level and group level capital adequacy ratio requirements.</p>
+
+<h1>Article 1: Definitions</h1>
+<p><strong>Bank:</strong> Defines key terms such as bank, Central Bank, and terminology used in these regulations.</p>
+
+<h1>Article 2: Quantitative Requirements</h1>
+<p><strong>Regulatory Capital:</strong> Total regulatory capital consists of Tier 1 capital and Tier 2 capital.</p>
+<p><strong>Requirements:</strong> Minimum requirements for CET1, Tier 1 Capital, and Total Capital in relation to risk weighted assets (RWA).</p>
+
+<h1>Article 3: Capital Components</h1>
+<p><strong>Definitions:</strong> Defines CET1, AT1, and Tier 2 capital components.</p>
+<p><strong>Items Included:</strong> Specifies the items included in each component.</p>
+
+<h1>Article 4: Regulatory Adjustments</h1>
+<p><strong>CET1 Capital Adjustments:</strong> Specifies the regulatory adjustments applied to CET1 capital.</p>
+<p><strong>Risk Weights:</strong> Defines risk weights for certain items.</p>
+
+<h1>Article 5: Capital Conservation Buffer</h1>
+<p><strong>Buffer Requirement:</strong> Banks must maintain a capital conservation buffer in addition to the minimum CET1 capital.</p>
+<p><strong>Non-Compliance:</strong> Non-compliance with the buffer requirement leads to restrictions on dividend payouts.</p>
+
+<h1>Article 6: Countercyclical Buffer</h1>
+<p><strong>Implementation:</strong> Banks may be required to implement the countercyclical buffer to protect against excess credit growth.</p>
+<p><strong>Communication:</strong> Buffer requirements communicated by the Central Bank.</p>
+
+<h1>Article 7: Domestic Systemically Important Banks</h1>
+<p><strong>Capital Buffers:</strong> Requires additional capital buffers for domestically systemically important banks.</p>
+<p><strong>Notification:</strong> Notification from the Central Bank for banks concerned.</p>
+
+<h1>Article 8: Disclosure Requirements</h1>
+<p><strong>Disclosure Elements:</strong> Banks must disclose regulatory capital elements, adjustments, limits, and descriptions of capital instruments.</p>
+<p><strong>Explanation:</strong> Comprehensive explanation of ratio calculations and terms of capital instruments.</p>
+
+<h1>Article 9: Transitional Arrangements</h1>
+<p><strong>Value Calculation:</strong> Transitional arrangements for value calculation of regulatory adjustments and capital issued from subsidiaries.</p>
+<p><strong>Phasing Out:</strong> Phasing out of capital instruments that no longer qualify.</p>
+<p><strong>Exclusion:</strong> Exclusion of non-compliant capital instruments from CET1.</p>
+
+<h1>Article 10: Reporting</h1>
+<p><strong>Report Format:</strong> Banks must report their capital position in the prescribed format and frequency.</p>
+<p><strong>Specific Information:</strong> Specific information must be provided upon request.</p>
+
+<h1>Article 11: Interpretation</h1>
+<p><strong>Reference:</strong> The Regulatory Development Division of the Central Bank is the reference for interpretation.</p>
+
+<h1>Article 12: Publication and Application</h1>
+<p><strong>Publication:</strong> Regulations to be published in the Official Gazette and effective from 1 February 2017.</p>
+
+</body>
+</html>

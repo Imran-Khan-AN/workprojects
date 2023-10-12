@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Chatbot</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+
+      
+        .main_area {
+            display: flex;
+            justify-content: center;
+            /* align-items: center; */
+            height: 100vh;
+            margin: 0;
+            background-color: #e8e8e8;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .chat-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 48px 35px -48px rgba(0, 0, 0, 0.1);
+            /* max-width: 600px; */
+            width: 90%;
+            overflow: auto;
+            padding: 20px;
+            height: 60%;
+            margin-top: 0.5%;
+        }
+
+        .chat-message {
+            margin-bottom: 20px;
+        }
+
+        .chat-message p {
+            margin: 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .bot-message p {
+            background-color: #f2f2f2;
+        }
+
+        .user-message p {
+            background-color: #0F65FF;
+            color: #fff;
+        }
+
+        .input-group {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background-color: #fff;
+            height: 25%;
+        }
+
+        textarea {
+            resize: none;
+        }
+    </style>
+</head>
+
+<body>
+    {% load static %}
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand p-1" style="margin-left: 10px;"  href="/">
+            <img width="250px" src="https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,f_auto,q_auto:eco,dpr_1/yelrh5t25csmyjsw8ldv" alt="">
+         
+        </a>
+
+        <div class="dropdown ml-auto mr-3">
+            <button class="btn btn-primary dropdown-toggle" style="background-color:#0F65FF;" type="button"
+                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                FinGPT Bot
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="/document_analysis">Document Analysis</a>
+                <a class="dropdown-item" href="/audio">Audio Analysis</a>
+                <a class="dropdown-item" href="/reg">Reg. as a code</a>
+            </div>
+        </div>
+        <form action="/logout/" method="POST" class="form-inline">
+            {% csrf_token %}
+            <button style="background-color:#0F65FF;" type="submit" class="btn text-light my-2 my-sm-0">Logout</button>
+        </form>
+    </nav>
+
+    <div class="main_area">
+        
+
+        <div class="chat-container" id="chatContainer">
+            <!-- Chat messages will be added here -->
+        </div>
+        <div class="input-group">
+            <textarea class="form-control no-outline" placeholder="Type a message" id="messageInput"></textarea>
+            <div class="input-group-append">
+                <button class="btn text-light" style="background-color:#0F65FF;" type="button" id="sendButton"><i style="font-size:24px" class="fa">&#xf1d8;</i></button>
+            </div>
+        </div>
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('sendButton').addEventListener('click', sendMessage);
+        document.getElementById('messageInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        function sendMessage() {
+            var messageInput = document.getElementById('messageInput');
+            var sendButton = document.getElementById('sendButton');
+            var message = messageInput.value;
+            messageInput.value = '';
+
+            if (message.trim() === '') {
+                return;  // Don't send an empty message
+            }
+            // Format the user's message
+            var formattedMessage = message.replace(/\n/g, '<br>');
+            // Add the user's message to the chat
+            var chatContainer = document.getElementById('chatContainer');
+            var userMessageElement = document.createElement('div');
+            userMessageElement.className = 'chat-message user-message';
+            userMessageElement.innerHTML = '<p>' + formattedMessage + '</p>';
+            chatContainer.appendChild(userMessageElement);
+
+            // Scroll the chat to the end
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            // Disable the send button and show a loading spinner
+            sendButton.disabled = true;
+            sendButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...';
+
+            // Send the message to the server
+            fetch('/chat/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')  // Django requires this header
+                },
+                body: JSON.stringify({ message: message })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Format the bot's response
+                    var botMessage = data.message.replace(/\n/g, '<br>');
+
+                    // Add the bot's response to the chat
+                    var botMessageElement = document.createElement('div');
+                    botMessageElement.className = 'chat-message bot-message';
+                    botMessageElement.innerHTML = '<p>' + botMessage + '</p>';
+                    chatContainer.appendChild(botMessageElement);
+
+                    // Scroll the chat to the end
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+
+                    // Enable the send button and remove the loading spinner
+                    sendButton.disabled = false;
+                    sendButton.innerHTML = '<i style="font-size:24px" class="fa">&#xf1d8;</i>';
+                });
+        }
+
+        // Function to get a cookie by name
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Focus on the message input when the page is loaded
+        window.onload = function () {
+            document.getElementById('messageInput').focus();
+        };
+    </script>
+</body>
+
+</html>

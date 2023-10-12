@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Chatbot</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/fe55e4d644.js" crossorigin="anonymous"></script>
+    <style>
+        .main_area {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            margin-top: 300px;
+            /* align-items: center; */
+            min-height: 80vh;
+            margin: 0;
+            background-color: #e8e8e8;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .containerr {
+            display: flex;
+            align-items: center;
+
+        }
+
+        .logo {
+            margin-left: 10px;
+        }
+
+        .logo img {
+            max-height: 50px;
+            /* adjust based on your logo size */
+        }
+
+        button {
+            padding: 8px 18px;
+            border: unset;
+            border-radius: 5px;
+            color: #0F65FF;
+            z-index: 1;
+            background: #F8F9FA;
+            position: relative;
+            font-weight: 1000;
+            font-size: 17px;
+            -webkit-box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+            box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+            transition: all 250ms;
+            overflow: hidden;
+            margin-right: 30px;
+        }
+
+        button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0;
+            border-radius: 5px;
+            background-color: #0F65FF;
+            z-index: -1;
+            -webkit-box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+            box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+            transition: all 250ms
+        }
+
+        button:hover {
+            color: #e8e8e8;
+        }
+
+        button:hover::before {
+            width: 100%;
+        }
+
+        .custom-link {
+            color: #0F65FF;
+            text-decoration: none;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .custom-link:hover {
+            color: #e8e8e8;
+        }
+
+        .chat-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 48px 35px -48px rgba(0, 0, 0, 0.1);
+            /* max-width: 600px; */
+            width: 70%;
+            padding: 20px;
+            min-height: 600px;
+            margin-top: 0.5%;
+        }
+
+        .chat-message {
+            margin-bottom: 20px;
+        }
+
+        .chat-message p {
+            margin: 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .bot-message p {
+            background-color: #f2f2f2;
+        }
+
+        .user-message p {
+            background-color: #0F65FF;
+            color: #fff;
+        }
+
+        /* Add this to hide the chat messages initially */
+        .chat-container .chat-message {
+            display: none;
+        }
+
+        /* Styling for the bot and user icons */
+        .bot-icon,
+        .user-icon {
+            font-size: 20px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+
+<body>
+    {% load static %}
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand p-1" style="margin-left: 10px;" href="/">
+            <img width="250px"
+                src="https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,f_auto,q_auto:eco,dpr_1/yelrh5t25csmyjsw8ldv"
+                alt="">
+
+        </a>
+
+
+        <div class="dropdown ml-auto mr-3">
+            <button class="btn btn-primary dropdown-toggle" style="background-color:#0F65FF;" type="button"
+                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Audio Analysis
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="/chat_zone">FinGPT Bot</a>
+                <a class="dropdown-item" href="/document_analysis">Document Analysis</a>
+                <a class="dropdown-item" href="/reg">Reg. as a code</a>
+            </div>
+
+        </div>
+
+        <form action="/logout/" method="POST" class="form-inline">
+            {% csrf_token %}
+            <button style="background-color:#0F65FF;" type="submit" class="btn text-light my-2 my-sm-0">Logout</button>
+        </form>
+    </nav>
+
+
+    <div class="main_area">
+        <div>
+            <div class="containerr">
+                <h1 style="font-size: 40px;">FinGPT</h1>
+                <p style="margin-top: 38px; margin-right: 20px;"><b>4.0</b></p>
+                <p style="margin-top: 48px;">Powered By Generative AI</p>
+            </div>
+        </div>
+
+        <!-- Upload Audio Button -->
+        <button id="uploadButton" class="mt-3" type="button" data-toggle="modal" data-target="#uploadModal">Upload
+            Audio</button>
+
+        <!-- Upload Modal -->
+        <div id="uploadModal" class="modal" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Upload Audio</h4>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Drag and Drop Area -->
+                        <div id="dropArea" style="border: 2px dashed #ccc; padding: 20px; text-align: center;">
+                            Drag and drop audio file here or click to select file
+                        </div>
+                        <!-- Upload Form -->
+                        <form id="uploadForm" style="display: none;">
+                            <input id="audioFile" type="file" accept="audio/*">
+                        </form>
+                        <!-- Response from server -->
+                        <div id="serverResponse"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- <div class="p-5 border" style="display: none;" id="success">
+            <i class="fa-regular fa-circle-check"></i>
+        </div> -->
+
+        <div class="chat-container mt-5">
+            <div class="chat-message user-message w-50">
+                <p class="ml-2">
+                    Salaam walaikum, this is Ahmed
+from Mashreq Bank. I am calling
+regarding the case reference
+CBUAE2023123, I'd like to discuss
+an important matter regarding
+a recent issue that has come
+to our attention. We received a
+report from the Central Bank of
+the UAE stating that our AML
+controls has failed to detect a
+suspicious transaction worth
+1 0 million Dirhams made to a
+high-risk entity. Can we discuss
+this further?
+                </p>
+            </div>
+            <div class="chat-message bot-message w-50 ml-auto">
+                <p>
+                    Good morning, Ahmed. This is
+Hana from the Central Bank
+Yes, I've been assigned to
+investigate this matter related to
+CBUAE2023123. Our due diligence
+revealed that a suspicious
+transaction went unnoticed
+through your bank's Financial
+Crime controls, which is a violation
+of the AML regulation. As a
+result, there potentially could be a
+substantial fine on Mashreq Bank
+I'd like to understand how this
+happened and discuss potential
+measures to prevent such
+incidents in the future.
+                </p>
+            </div>
+            <div class="chat-message user-message w-50">
+                <p>
+                    Thank you for your prompt
+attention to this matter Hana!
+We take this issue very seriously,
+and we sincerely apologize for the
+oversight. We are committed to
+working with the Central Bank to
+rectify the situation and improve
+our controls, both processes and
+technology, to ensure compliance
+with the respective regulation and
+mitigate recurrence. I can assure
+you that we will take this up with
+utmost priority in 2023 itself and
+seek to resolve the matter as
+soon as possible. Please ratify
+the next steps that CBUAE would
+recommend undertaking. And I
+propose that we have a face to
+face meeting on 10th August to
+deliberate this further with senior
+officials from both sides. Thank
+you.
+                </p>
+            </div>
+        </div>
+
+
+
+
+
+
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script>
+            var dropArea = document.getElementById('dropArea');
+            var uploadForm = document.getElementById('uploadForm');
+            var audioFile = document.getElementById('audioFile');
+
+            // Prevent default drag behaviors
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            // Highlight drop area when item is dragged over it
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, highlight, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, unhighlight, false);
+            });
+
+            function highlight(e) {
+                dropArea.style.backgroundColor = '#f8f8f8';
+            }
+
+            function unhighlight(e) {
+                dropArea.style.backgroundColor = '#ffffff';
+            }
+
+            // Handle dropped files
+            dropArea.addEventListener('drop', handleDrop, false);
+
+            function handleDrop(e) {
+                var dt = e.dataTransfer;
+                var files = dt.files;
+
+                handleFiles(files);
+            }
+
+            function handleFiles(files) {
+                // Show the bot and user messages 
+                var chatMessages = document.querySelectorAll('.chat-container .chat-message');
+                chatMessages.forEach(function (message, index) {
+                    setTimeout(function () {
+                        message.style.display = 'block';
+                    }, 1000 * (index + 1));  // 500ms delay multiplied by the message index
+                });
+
+                // Hide the uploadModal
+                $('#uploadModal').modal('hide');
+            }
+
+
+            // Handle click event
+            dropArea.addEventListener('click', function () {
+                audioFile.click();
+            }, false);
+
+            // Handle file selection
+            audioFile.addEventListener('change', function () {
+                handleFiles(audioFile.files);
+            }, false);
+        </script>
+
+
+
+</body>
+
+</html>
